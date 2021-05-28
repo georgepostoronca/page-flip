@@ -1,23 +1,36 @@
 {
   "name": "pageflip",
   "version": "1.0.0",
-  "description": "",
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "normalize.css": "8.0.1",
-    "page-flip": "2.0.7",
-    "parcel-bundler": "^1.6.1",
+    "img": "^3.0.3",
+    "jquery": "^3.6.0",
+    "normalize.css": "^8.0.1",
+    "page-flip": "^2.0.7",
+    "parcel-bundler": "^1.12.5",
     "reset.css": "2.0.2"
   },
   "devDependencies": {
-    "@babel/core": "7.2.0"
+    "@babel/core": "^7.2.0",
+    "sass": "^1.34.0"
   },
   "resolutions": {
     "@babel/preset-env": "7.13.8"
   },
-  "keywords": []
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgepostoronca/page-flip.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/georgepostoronca/page-flip/issues"
+  },
+  "homepage": "https://github.com/georgepostoronca/page-flip#readme",
+  "description": ""
 }
