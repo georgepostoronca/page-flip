@@ -6,9 +6,11 @@ import {
 } from "page-flip";
 
 let flipbook = document.querySelector(".js-flipbook");
-function flipbookStatus() {
+let flipbookPages = flipbook.querySelector(".js-flipbook-pages");
+
+function flipbookStatus(root) {
     let status = 0;
-    let images = [].slice.call(document.querySelectorAll("img"));
+    let images = [].slice.call(root.querySelectorAll("img"));
     let imagesLoaded = 0;
 
     if (images.length) images.forEach(function (image) {
@@ -35,11 +37,10 @@ function flipbookLoader(status) {
 }
 
 function initFlipbook() {
-    let demoBook = document.querySelector(".js-flipbook-pages");
     let flipBookContent = document.querySelector(".js-flipbook-content");
     let bookPageWidth = window.matchMedia("(max-width: 400px)").matches ? 290 : 400;
 
-    const pageFlip = new PageFlip(demoBook, {
+    const pageFlip = new PageFlip(flipbookPages, {
         width: bookPageWidth, // base page width
         height: flipBookContent.clientHeight, // base page height
         size: "fixed",
@@ -54,7 +55,7 @@ function initFlipbook() {
     });
 
     let interval = setInterval(function () {
-        let status = flipbookStatus();
+        let status = flipbookStatus(flipbook);
 
         if (status >= 100) {
             console.log(status);
@@ -80,9 +81,9 @@ function initFlipbook() {
         console.log(pageFlip);
     });
 
-    document.querySelector(".js-flipbook-fullscreen").addEventListener("click", function () {
+    document.querySelector(".js-flipbook-fullscreen-btn").addEventListener("click", function () {
         // fullscreen
-        flipbookFullpage();
+        flipFullscreen.init();
         console.log("fullscreen");
     });
 
@@ -92,15 +93,59 @@ function initFlipbook() {
     });
 }
 
+function FlipbookFullscreen(content) {
+    let root = document.querySelector(".js-flipbook-fullscreen");
+    let overlay = document.createElement("div");
+    let wrap = document.createElement("div");
+    let images = [].slice.call(document.querySelectorAll("img"));
+    let pageFlip;
+    images.forEach(function(img) {
+        let page = document.createElement("div");
+        page.append(img.cloneNode());
+        wrap.append(page);
+    });
+    
+    root.append(overlay);
+    root.append(wrap);
+
+    console.log(wrap)
+
+    let init = () => {
+        console.log("init");
+        pageFlip = new PageFlip(wrap, {
+            width: 500, // base page width
+            height: 800, // base page height
+            size: "stretch",
+            maxShadowOpacity: 0.2, // Half shadow intensity
+            showCover: true,
+            mobileScrollSupport: false // disable content scrolling on mobile devices
+        });
+    }
+    init();
+
+    let close = () => {
+        console.log("close");
+    }
+
+    overlay.addEventListener("click", function() {
+        close();
+    });
+    
+    return {
+        init: init,
+        open: function() {
+
+        },
+        close: close
+    }
+}
+
+let flipFullscreen;
 document.addEventListener("DOMContentLoaded", function () {
     initFlipbook();
+    flipFullscreen = FlipbookFullscreen(flipbookPages);
 });
 
-function flipbookFullscreen() {
-    let fullpage = flipbook.querySelector(".js-flipbook-fullscreen");
-
-
-}
 
 // function FlipBook(obj) {
 //     this.obj = obj || {};
