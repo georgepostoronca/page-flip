@@ -208,6 +208,12 @@ require("./styles.scss");
 
 var _pageFlip = require("page-flip");
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 var flipbook = document.querySelector(".js-flipbook");
 var flipbookPages = flipbook.querySelector(".js-flipbook-pages");
 
@@ -289,82 +295,32 @@ function initFlipbook() {
   });
 }
 
-function FlipbookFullscreen(content) {
-  var root = document.querySelector(".js-flipbook-fullscreen");
-  var overlay = document.createElement("div");
-  var wrap = document.createElement("div");
-  var images = [].slice.call(document.querySelectorAll("img"));
-  var pageFlip;
-  images.forEach(function (img) {
-    var page = document.createElement("div");
-    page.append(img.cloneNode());
-    wrap.append(page);
-  });
-  root.append(overlay);
-  root.append(wrap);
-  console.log(wrap);
+var FlipBook = /*#__PURE__*/function () {
+  function FlipBook(root) {
+    _classCallCheck(this, FlipBook);
 
-  var init = function init() {
-    console.log("init");
-    pageFlip = new _pageFlip.PageFlip(wrap, {
-      width: 500,
-      // base page width
-      height: 800,
-      // base page height
-      size: "stretch",
-      maxShadowOpacity: 0.2,
-      // Half shadow intensity
-      showCover: true,
-      mobileScrollSupport: false // disable content scrolling on mobile devices
+    this.el = root;
+    this.setttings = {};
+    this.setttingsFullScreen = {};
+  }
 
-    });
-  };
+  _createClass(FlipBook, [{
+    key: "div",
+    value: function div(name) {
+      return document.createElement(name || "div");
+    }
+  }, {
+    key: "init",
+    value: function init() {}
+  }, {
+    key: "initFullScreen",
+    value: function initFullScreen() {}
+  }]);
 
-  init();
+  return FlipBook;
+}();
 
-  var close = function close() {
-    console.log("close");
-  };
-
-  overlay.addEventListener("click", function () {
-    close();
-  });
-  return {
-    init: init,
-    open: function open() {},
-    close: close
-  };
-}
-
-var flipFullscreen;
-document.addEventListener("DOMContentLoaded", function () {
-  initFlipbook();
-  flipFullscreen = FlipbookFullscreen(flipbookPages);
-}); // function FlipBook(obj) {
-//     this.obj = obj || {};
-// }
-// let flipbookRoot = document.querySelector(".js-flipbook");
-// const flpiBook = new FlipBook({
-//     el: "",
-//     pages: flipbookRoot.querySelectorAll(".page"),
-//     settings: {
-//         width: window.matchMedia("(max-width: 400px)").matches ? 290 : 400, // base page width
-//         height: flipBookContent.clientHeight, // base page height
-//         size: "fixed",
-//         maxHeight: 509,
-//         minHeight: 320,
-//         maxWidth: 800,
-//         minWidth: 320,
-//         maxShadowOpacity: 0.2, // Half shadow intensity
-//         showCover: true,
-//         mobileScrollSupport: false // disable content scrolling on mobile devices
-//     },
-//     total: flipbookRoot.querySelector(".js-flipbook-total"),
-//     current: flipbookRoot.querySelector(".js-flipbook-current"),
-//     next: flipbookRoot.querySelector(".js-flipbook-next"),
-//     prev: flipbookRoot.querySelector(".js-flipbook-prev"),
-//     preloader: flipbookRoot.querySelector(".js-flipbook-loader")
-// });
+var book = new FlipBook(flipbook);
 },{"normalize.css":"node_modules/normalize.css/normalize.css","./styles.scss":"src/styles.scss","page-flip":"node_modules/page-flip/dist/js/page-flip.browser.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

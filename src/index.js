@@ -93,85 +93,25 @@ function initFlipbook() {
     });
 }
 
-function FlipbookFullscreen(content) {
-    let root = document.querySelector(".js-flipbook-fullscreen");
-    let overlay = document.createElement("div");
-    let wrap = document.createElement("div");
-    let images = [].slice.call(document.querySelectorAll("img"));
-    let pageFlip;
-    images.forEach(function(img) {
-        let page = document.createElement("div");
-        page.append(img.cloneNode());
-        wrap.append(page);
-    });
-    
-    root.append(overlay);
-    root.append(wrap);
+class FlipBook {
+    constructor(root) {
+        this.el = root;
 
-    console.log(wrap)
-
-    let init = () => {
-        console.log("init");
-        pageFlip = new PageFlip(wrap, {
-            width: 500, // base page width
-            height: 800, // base page height
-            size: "stretch",
-            maxShadowOpacity: 0.2, // Half shadow intensity
-            showCover: true,
-            mobileScrollSupport: false // disable content scrolling on mobile devices
-        });
-    }
-    init();
-
-    let close = () => {
-        console.log("close");
+        this.setttings = {}
+        this.setttingsFullScreen = {}
     }
 
-    overlay.addEventListener("click", function() {
-        close();
-    });
-    
-    return {
-        init: init,
-        open: function() {
-
-        },
-        close: close
+    div(name) {
+        return document.createElement(name || "div");
     }
+
+    init() {
+
+    }
+
+    initFullScreen() {
+
+    } 
 }
 
-let flipFullscreen;
-document.addEventListener("DOMContentLoaded", function () {
-    initFlipbook();
-    flipFullscreen = FlipbookFullscreen(flipbookPages);
-});
-
-
-// function FlipBook(obj) {
-//     this.obj = obj || {};
-// }
-
-// let flipbookRoot = document.querySelector(".js-flipbook");
-
-// const flpiBook = new FlipBook({
-//     el: "",
-//     pages: flipbookRoot.querySelectorAll(".page"),
-//     settings: {
-//         width: window.matchMedia("(max-width: 400px)").matches ? 290 : 400, // base page width
-//         height: flipBookContent.clientHeight, // base page height
-//         size: "fixed",
-//         maxHeight: 509,
-//         minHeight: 320,
-//         maxWidth: 800,
-//         minWidth: 320,
-
-//         maxShadowOpacity: 0.2, // Half shadow intensity
-//         showCover: true,
-//         mobileScrollSupport: false // disable content scrolling on mobile devices
-//     },
-//     total: flipbookRoot.querySelector(".js-flipbook-total"),
-//     current: flipbookRoot.querySelector(".js-flipbook-current"),
-//     next: flipbookRoot.querySelector(".js-flipbook-next"),
-//     prev: flipbookRoot.querySelector(".js-flipbook-prev"),
-//     preloader: flipbookRoot.querySelector(".js-flipbook-loader")
-// });
+let book = new FlipBook(flipbook);
