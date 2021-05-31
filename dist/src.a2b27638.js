@@ -208,6 +208,8 @@ require("./styles.scss");
 
 var _pageFlip = require("page-flip");
 
+var flipbook = document.querySelector(".js-flipbook");
+
 function flipbookStatus() {
   var status = 0;
   var images = [].slice.call(document.querySelectorAll("img"));
@@ -219,20 +221,27 @@ function flipbookStatus() {
 
     status = imagesLoaded * 100 / images.length;
   });
-  console.log("status");
   return status;
 }
 
 function flipbookLoader(status) {
   var loaderElement = document.querySelector(".js-flipbook-loader");
   loaderElement.style.width = status + "%";
+
+  if (status >= 100) {
+    setTimeout(function () {
+      loaderElement.parentElement.classList.add("hide");
+      flipbook.classList.add("active");
+    }, 1000);
+  }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  var demoBook = document.getElementById("demoBookExample");
+function initFlipbook() {
+  var demoBook = document.querySelector(".js-flipbook-pages");
   var flipBookContent = document.querySelector(".js-flipbook-content");
+  var bookPageWidth = window.matchMedia("(max-width: 400px)").matches ? 290 : 400;
   var pageFlip = new _pageFlip.PageFlip(demoBook, {
-    width: 400,
+    width: bookPageWidth,
     // base page width
     height: flipBookContent.clientHeight,
     // base page height
@@ -241,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
     minHeight: 320,
     maxWidth: 800,
     minWidth: 320,
-    maxShadowOpacity: 0.5,
+    maxShadowOpacity: 0.2,
     // Half shadow intensity
     showCover: true,
     mobileScrollSupport: false // disable content scrolling on mobile devices
@@ -249,7 +258,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   var interval = setInterval(function () {
     var status = flipbookStatus();
-    if (status > 100) clearInterval(interval);
+
+    if (status >= 100) {
+      console.log(status);
+      clearInterval(interval);
+    }
+
     flipbookLoader(status);
   }, 100); // load pages
 
@@ -261,16 +275,51 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   document.querySelector(".js-flipbook-next").addEventListener("click", function () {
     pageFlip.flipNext();
+    pageFlip.update();
+    console.log(pageFlip);
   });
   document.querySelector(".js-flipbook-fullscreen").addEventListener("click", function () {
     // fullscreen
+    flipbookFullpage();
     console.log("fullscreen");
   }); // current page
 
   pageFlip.on("flip", function (e) {
     document.querySelector(".js-flipbook-current").innerText = e.data + 1;
   });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  initFlipbook();
 });
+
+function flipbookFullscreen() {
+  var fullpage = flipbook.querySelector(".js-flipbook-fullscreen");
+} // function FlipBook(obj) {
+//     this.obj = obj || {};
+// }
+// let flipbookRoot = document.querySelector(".js-flipbook");
+// const flpiBook = new FlipBook({
+//     el: "",
+//     pages: flipbookRoot.querySelectorAll(".page"),
+//     settings: {
+//         width: window.matchMedia("(max-width: 400px)").matches ? 290 : 400, // base page width
+//         height: flipBookContent.clientHeight, // base page height
+//         size: "fixed",
+//         maxHeight: 509,
+//         minHeight: 320,
+//         maxWidth: 800,
+//         minWidth: 320,
+//         maxShadowOpacity: 0.2, // Half shadow intensity
+//         showCover: true,
+//         mobileScrollSupport: false // disable content scrolling on mobile devices
+//     },
+//     total: flipbookRoot.querySelector(".js-flipbook-total"),
+//     current: flipbookRoot.querySelector(".js-flipbook-current"),
+//     next: flipbookRoot.querySelector(".js-flipbook-next"),
+//     prev: flipbookRoot.querySelector(".js-flipbook-prev"),
+//     preloader: flipbookRoot.querySelector(".js-flipbook-loader")
+// });
 },{"normalize.css":"node_modules/normalize.css/normalize.css","./styles.scss":"src/styles.scss","page-flip":"node_modules/page-flip/dist/js/page-flip.browser.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
