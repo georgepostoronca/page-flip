@@ -208,6 +208,26 @@ require("./styles.scss");
 
 var _pageFlip = require("page-flip");
 
+function flipbookStatus() {
+  var status = 0;
+  var images = [].slice.call(document.querySelectorAll("img"));
+  var imagesLoaded = 0;
+  if (images.length) images.forEach(function (image) {
+    if (image.complete) {
+      imagesLoaded += 1;
+    }
+
+    status = imagesLoaded * 100 / images.length;
+  });
+  console.log("status");
+  return status;
+}
+
+function flipbookLoader(status) {
+  var loaderElement = document.querySelector(".js-flipbook-loader");
+  loaderElement.style.width = status + "%";
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   var demoBook = document.getElementById("demoBookExample");
   var flipBookContent = document.querySelector(".js-flipbook-content");
@@ -226,7 +246,12 @@ document.addEventListener("DOMContentLoaded", function () {
     showCover: true,
     mobileScrollSupport: false // disable content scrolling on mobile devices
 
-  }); // load pages
+  });
+  var interval = setInterval(function () {
+    var status = flipbookStatus();
+    if (status > 100) clearInterval(interval);
+    flipbookLoader(status);
+  }, 100); // load pages
 
   pageFlip.loadFromHTML(document.querySelectorAll(".page")); // total pages
 
@@ -274,7 +299,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64779" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63697" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

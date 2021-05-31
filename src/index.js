@@ -3,6 +3,28 @@ import "./styles.scss";
 
 import { PageFlip } from "page-flip";
 
+function flipbookStatus() {
+    let status = 0;
+    let images = [].slice.call(document.querySelectorAll("img"));
+    let imagesLoaded = 0;
+
+    if(images.length) images.forEach(function(image) {
+        if(image.complete) {
+            imagesLoaded += 1;
+        }
+
+        status = (imagesLoaded * 100) / images.length
+    });
+
+    console.log("status");
+    return status;
+}
+
+function flipbookLoader(status) {
+    let loaderElement = document.querySelector(".js-flipbook-loader");
+    loaderElement.style.width = status + "%";
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     let demoBook = document.getElementById("demoBookExample");
     let flipBookContent = document.querySelector(".js-flipbook-content");
@@ -21,6 +43,13 @@ document.addEventListener("DOMContentLoaded", function () {
         showCover: true,
         mobileScrollSupport: false // disable content scrolling on mobile devices
     });
+
+    let interval = setInterval(function( ){
+        let status = flipbookStatus();
+
+        if(status > 100 ) clearInterval(interval);
+        flipbookLoader(status);
+    }, 100);
 
     
     // load pages
