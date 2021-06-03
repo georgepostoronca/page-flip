@@ -55,16 +55,16 @@ function toggleModalFlipBook(bool) {
 
 function initFlipbook() {
     let flipBookContent = document.querySelector(".js-flipbook-content");
-    let bookPageWidth = window.matchMedia("(max-width: 500px)").matches ? 290 : 400;
+    let bookPageWidth = window.matchMedia("(max-width: 500px)").matches ? 290 : 350;
 
     const pageFlip = new PageFlip(flipbookPages, {
         width: bookPageWidth, // base page width
         height: flipBookContent.clientHeight, // base page height
         size: "fixed",
-        maxHeight: 509,
-        minHeight: 320,
-        maxWidth: 800,
-        minWidth: 320,
+        maxWidth: 2000,
+        minWidth: 260,
+        maxHeight: 2000,
+        minHeight: 200,
 
         maxShadowOpacity: 0.2, // Half shadow intensity
         showCover: true,

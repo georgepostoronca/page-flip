@@ -256,17 +256,17 @@ function toggleModalFlipBook(bool) {
 
 function initFlipbook() {
   var flipBookContent = document.querySelector(".js-flipbook-content");
-  var bookPageWidth = window.matchMedia("(max-width: 500px)").matches ? 290 : 400;
+  var bookPageWidth = window.matchMedia("(max-width: 500px)").matches ? 290 : 350;
   var pageFlip = new _pageFlip.PageFlip(flipbookPages, {
     width: bookPageWidth,
     // base page width
     height: flipBookContent.clientHeight,
     // base page height
     size: "fixed",
-    maxHeight: 509,
-    minHeight: 320,
-    maxWidth: 800,
-    minWidth: 320,
+    maxWidth: 2000,
+    minWidth: 260,
+    maxHeight: 2000,
+    minHeight: 200,
     maxShadowOpacity: 0.2,
     // Half shadow intensity
     showCover: true,
@@ -362,6 +362,10 @@ function flipFullscreen() {
       width: 500,
       height: 700,
       size: "stretch",
+      maxWidth: 2000,
+      minWidth: 260,
+      maxHeight: 2000,
+      minHeight: 200,
       maxShadowOpacity: 0.2,
       // Half shadow intensity
       showCover: true,

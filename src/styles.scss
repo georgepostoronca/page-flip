@@ -325,6 +325,7 @@
     transition-timing-function: ease-in-out;
 
     right: calc(370px / 2);
+    z-index: 999;
 
     &:hover {
       transform: scale(1.1);
@@ -381,9 +382,10 @@
 
 // fullscreen
 .flipFullscreen-modal {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
 
   display: flex;
   background-color: rgba(0, 0, 0, 0.4);
