@@ -175,6 +175,10 @@ function flipFullscreen() {
             width: 500,
             height: 700,
             size: "stretch",
+            maxWidth: 2000,
+            minWidth: 260,
+            maxHeight: 2000,
+            minHeight: 200,
             maxShadowOpacity: 0.2, // Half shadow intensity
             showCover: true,
             mobileScrollSupport: false // disable content scrolling on mobile devices
