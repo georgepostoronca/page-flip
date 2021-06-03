@@ -369,6 +369,7 @@ function flipFullscreen() {
       maxShadowOpacity: 0.2,
       // Half shadow intensity
       showCover: true,
+      flippingTime: 500,
       mobileScrollSupport: false // disable content scrolling on mobile devices
 
     }); // load pages

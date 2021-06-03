@@ -181,6 +181,7 @@ function flipFullscreen() {
             minHeight: 200,
             maxShadowOpacity: 0.2, // Half shadow intensity
             showCover: true,
+            flippingTime: 500,
             mobileScrollSupport: false // disable content scrolling on mobile devices
         });
     
@@ -206,7 +207,6 @@ function flipFullscreen() {
     
         // total/current page
         templateObject.info.innerText = 1 + " / " + totalPages;
-
         pageFlip.on("flip", (e) => {
             templateObject.info.innerText = (e.data + 1) + " / " + totalPages;
         });
