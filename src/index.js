@@ -94,15 +94,73 @@ function initFlipbook() {
 }
 
 class FlipBook {
-    constructor(root) {
+    constructor(root, images) {
         this.el = root;
+        this.images = images;
+        this.name = "flipbook";
 
-        this.setttings = {}
-        this.setttingsFullScreen = {}
+        this.setttings = {};
+        this.setttingsFullScreen = {};
+    
+        this.template();
     }
 
-    div(name) {
-        return document.createElement(name || "div");
+    div(name, className) {
+        let element = document.createElement(name || "div");
+        if(className) element.classList.add(className);
+        return element;
+    }
+
+    templateImgaes(images = []) {
+        let tmp = [];
+
+        images.forEach((imageSrc) => {
+            // let page = this.div("div", "page");
+            // let content = this.div("div", "page__content");
+            // let img = this.div("img")
+            // img.alt = "img";
+            // img.src = imageSrc;
+
+            // content.append(img);
+            // page.append(content);
+            
+            let html = `
+                <div class="page">
+                    <div class="page-content">
+                        <img src="#{ imageSrc }" alt="IMG">
+                    </div>
+                </div>
+            `;
+            tmp.push(html);
+        });
+
+        return tmp;
+    }
+
+    template() {
+        let wrap = this.div("div", this.name + "__wrap");
+        let content = this.div("div", this.name + "__content");
+        let footer = this.div("div", this.name + "__footer");
+
+        let images = this.templateImgaes(this.images);
+        images.forEach((img) => {
+            content.insertAdjacentHTML("beforeend", img);
+        });
+
+        wrap.append(content);
+        wrap.append(footer);
+
+        console.log(wrap, images);
+
+        return {
+            wrap,
+            content,
+            footer
+        }
+    }
+
+    templateFullscreen() {
+
     }
 
     init() {
@@ -114,4 +172,6 @@ class FlipBook {
     } 
 }
 
-let book = new FlipBook(flipbook);
+
+let flippBookImages = ["img/img1.jpg", "img/img2.jpg", "img/img3.jpg", "img/img4.jpg", "img/img5.jpg", "img/img6.jpg", "img/img7.jpg"]
+let book = new FlipBook(flipbook, flippBookImages);
