@@ -208,14 +208,9 @@ require("./styles.scss");
 
 var _pageFlip = require("page-flip");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 var flipbook = document.querySelector(".js-flipbook");
 var flipbookPages = flipbook.querySelector(".js-flipbook-pages");
+var flipbookPagesClone = flipbookPages.cloneNode(true);
 
 function flipbookStatus(root) {
   var status = 0;
@@ -243,9 +238,25 @@ function flipbookLoader(status) {
   }
 }
 
+function createElement(tag, className) {
+  var el = document.createElement(tag || "div");
+  el.classList.add(className);
+  return el;
+}
+
+function toggleModalFlipBook(bool) {
+  if (bool) {
+    document.querySelector(".flipFullscreen-modal").classList.add("active");
+    document.body.style.overflow = "hidden";
+  } else {
+    document.querySelector(".flipFullscreen-modal").classList.remove("active");
+    document.body.style.overflow = "auto";
+  }
+}
+
 function initFlipbook() {
   var flipBookContent = document.querySelector(".js-flipbook-content");
-  var bookPageWidth = window.matchMedia("(max-width: 400px)").matches ? 290 : 400;
+  var bookPageWidth = window.matchMedia("(max-width: 500px)").matches ? 290 : 400;
   var pageFlip = new _pageFlip.PageFlip(flipbookPages, {
     width: bookPageWidth,
     // base page width
@@ -266,14 +277,13 @@ function initFlipbook() {
     var status = flipbookStatus(flipbook);
 
     if (status >= 100) {
-      console.log(status);
       clearInterval(interval);
     }
 
     flipbookLoader(status);
   }, 100); // load pages
 
-  pageFlip.loadFromHTML(document.querySelectorAll(".page")); // total pages
+  pageFlip.loadFromHTML(flipbook.querySelectorAll(".page")); // total pages
 
   document.querySelector(".js-flipbook-total").innerText = pageFlip.getPageCount();
   document.querySelector(".js-flipbook-prev").addEventListener("click", function () {
@@ -286,8 +296,9 @@ function initFlipbook() {
   });
   document.querySelector(".js-flipbook-fullscreen-btn").addEventListener("click", function () {
     // fullscreen
-    flipFullscreen.init();
-    console.log("fullscreen");
+    // flipFullscreen();
+    // console.log("fullscreen");
+    toggleModalFlipBook(true);
   }); // current page
 
   pageFlip.on("flip", function (e) {
@@ -295,32 +306,94 @@ function initFlipbook() {
   });
 }
 
-var FlipBook = /*#__PURE__*/function () {
-  function FlipBook(root) {
-    _classCallCheck(this, FlipBook);
+initFlipbook();
 
-    this.el = root;
-    this.setttings = {};
-    this.setttingsFullScreen = {};
+function flipFullscreen() {
+  var root = document.querySelector(".js-flipFullscreen");
+
+  function template() {
+    var wrap = createElement("div", "flipFullscreen__wrap");
+    var content = createElement("div", "flipFullscreen__content");
+    var footer = createElement("div", "flipFullscreen__footer");
+    var layout = createElement("div", "flipFullscreen__layout");
+    var close = createElement("div", "flipFullscreen__close");
+    var closeSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 10.6L6.6 5.2 5.2 6.6l5.4 5.4-5.4 5.4 1.4 1.4 5.4-5.4 5.4 5.4 1.4-1.4-5.4-5.4 5.4-5.4-1.4-1.4-5.4 5.4z"></path></svg>';
+    wrap.append(content);
+    wrap.append(footer);
+    wrap.append(layout);
+    close.innerHTML = closeSvg;
+    wrap.append(close);
+    content.append(flipbookPagesClone); // Control
+
+    var start = createElement("div", "flipFullscreen__start");
+    var end = createElement("div", "flipFullscreen__end");
+    var next = createElement("div", "flipFullscreen__next");
+    var prev = createElement("div", "flipFullscreen__prev");
+    var info = createElement("div", "flipFullscreen__info");
+    footer.append(start);
+    footer.append(prev);
+    footer.append(info);
+    footer.append(next);
+    footer.append(end);
+    console.log(wrap);
+    root.append(wrap);
+    return {
+      wrap: wrap,
+      start: start,
+      prev: prev,
+      info: info,
+      next: next,
+      end: end,
+      close: close,
+      layout: layout
+    };
   }
 
-  _createClass(FlipBook, [{
-    key: "div",
-    value: function div(name) {
-      return document.createElement(name || "div");
-    }
-  }, {
-    key: "init",
-    value: function init() {}
-  }, {
-    key: "initFullScreen",
-    value: function initFullScreen() {}
-  }]);
+  var templateObject = template();
+  templateObject.close.addEventListener("click", function () {
+    toggleModalFlipBook(false);
+  });
+  templateObject.layout.addEventListener("click", function () {
+    toggleModalFlipBook(false);
+  });
 
-  return FlipBook;
-}();
+  function init() {
+    var pageFlip = new _pageFlip.PageFlip(flipbookPagesClone, {
+      width: 500,
+      height: 700,
+      size: "stretch",
+      maxShadowOpacity: 0.2,
+      // Half shadow intensity
+      showCover: true,
+      mobileScrollSupport: false // disable content scrolling on mobile devices
 
-var book = new FlipBook(flipbook);
+    }); // load pages
+
+    pageFlip.loadFromHTML(flipbookPagesClone.querySelectorAll(".page"));
+    var totalPages = pageFlip.getPageCount();
+    templateObject.prev.addEventListener("click", function () {
+      pageFlip.flipPrev();
+    });
+    templateObject.next.addEventListener("click", function () {
+      pageFlip.flipNext();
+    });
+    templateObject.start.addEventListener("click", function () {
+      pageFlip.flip(0);
+    });
+    templateObject.end.addEventListener("click", function () {
+      pageFlip.flip(totalPages - 1);
+    }); // total/current page
+
+    templateObject.info.innerText = 1 + " / " + totalPages;
+    pageFlip.on("flip", function (e) {
+      templateObject.info.innerText = e.data + 1 + " / " + totalPages;
+    });
+  }
+
+  init();
+}
+
+flipFullscreen();
 },{"normalize.css":"node_modules/normalize.css/normalize.css","./styles.scss":"src/styles.scss","page-flip":"node_modules/page-flip/dist/js/page-flip.browser.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -349,7 +422,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63697" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60023" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

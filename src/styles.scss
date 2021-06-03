@@ -157,7 +157,7 @@
     height: 600px;
   }
 
-  @media(max-width: 400px) {
+  @media(max-width: 500px) {
     height: 500px;
   }
 
@@ -379,16 +379,164 @@
   }
 }
 
-// Turn
-#flipbook-js {
+// fullscreen
+.flipFullscreen-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  overflow: auto;
+
   width: 100%;
   height: 100%;
+
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: .2s;
+
+  &.active {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
-.turn-page-wrapper {
-  img {
+.flipFullscreen {
+  width: 1100px;
+  margin: auto;
+  background-color: #fff;
+  padding: 20px;
+  overflow: hidden;
+
+  @media(max-width: 1130px) {
+    width: 100%;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  @media(max-width: 768px) {
+    padding: 10px;
+  }
+
+  .flip-book {
+    box-shadow: none;
+  }
+
+  &__layout {
+    position: absolute;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  &__close {
+    background: rgba(30,30,30,.6);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    cursor: pointer;
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 10px;
+    position: relative;
+    transition: color .2s;
+    vertical-align: top;
+    visibility: inherit;
+    box-sizing: border-box;
+
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    svg {
+      fill: #fff;
+    }
+  }
+
+  &__footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(0deg,rgba(0,0,0,.85) 0,rgba(0,0,0,.019) 88%,transparent);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__info {
+    width: 96px;
+    font-size: 16px;
+    color: #ffffff;
+    font-family: 'Roboto';
+    text-align: center;
+  }
+
+  &__start, &__prev, &__next, &__end {
+    padding: 10px;
+    cursor: pointer;
+
+    display: flex;
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    position: relative;
+
+
+    &:after {
+      content: "";
+      display: block;
+      border: solid #ffffff;
+      display: inline-block;
+      padding: 9px;
+      transform: rotate(-45deg);
+      border-width: 0 3px 3px 0;
+      margin: auto;
+    }
+  }
+
+  &__prev, &__start {
+    &:after {
+      transform: rotate(135deg);
+    }
+  }
+
+  &__start, &__end  {
+    &:before {
+      content: "";
+      display: block;
+      width: 4px;
+      height: 35px;
+      background-color: #ffffff;
+      position: absolute;
+      top: 3px;
+      left: 0;
+    }
+  }
+
+  &__start {
+    margin-right: 10px;
+
+    &:before {
+      left: 1px;
+    }
+  }
+
+  &__end {
+    margin-left: 10px;
+    &::before {
+      left: inherit;
+      right: 0;
+    }
   }
 }
